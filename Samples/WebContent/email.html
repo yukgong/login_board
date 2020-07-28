@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+
+<link async rel="stylesheet" href="css/default.css">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/fonticon.css">
+
+<script defer
+	src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.0.2/TweenMax.min.js"></script>
+<script defer src="js/main.js"></script>
+<script defer src="js/buttonEvent.js"></script>
+</head>
+
+<body>
+	<div class="outer">
+		<div class="wrapper">
+			<div class="inner__wrapper js-email">
+				<!-- <img class="logo" src="img/logo.svg" alt="logo"> -->
+				<h2>로그인</h2>
+				<p>이메일을 입력해주세요.</p>
+				<form action="" id="frm">
+					<div class="inputWrapper">
+						<div class="inputGroup">
+							<label for="email" class="js-label">이메일</label> 
+							<input type="text" class="js-input" name="email" id="email" placeholder="이메일" autocomplete="off">
+							<p class="notice__error hide">
+								<i class="icon-icon_cancel"></i>올바른 이메일을 입력하세요.
+							</p>
+							<div class="save_email">
+								<input type="checkbox" id="chk_save_email"> <span>이메일
+									저장</span>
+							</div>
+						</div>
+					</div>
+					<div class="btnGroup">
+						<a href="signUp.jsp" type="submit" class="btn link">계정 만들기</a> 
+						<a href="#" class="btn primary js-nextBtn" id="btnLogin" type="submit">다음</a>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<!--쿠키 사용을 위한 cnd-->
+	<script src="http://lab.alexcican.com/set_cookies/cookie.js"
+		type="text/javascript"></script>
+	<script>
+		$(document).ready(function() {
+			$("#btnLogin").click(function() {
+				if ($("#email").val().trim() == "") {
+					alert("email을 입력해 주세요");
+					$("#email").focus();
+				} else {
+					$("#frm").attr("action", "emailCheck.jsp").submit();
+				}
+			});
+		});
+
+		// 아이디 저장하기
+		// cookie : string	-> id
+		// session : Object -> login 개인정보 저장
+
+		let user_email = $.cookie("user_email"); // 쿠키 꺼내오기
+		if (user_email != null) { // 저장된 쿠키가 있다면? 
+		// 			alert("cookie 있음");
+			$("#email").val(user_email);
+			$("#chk_save_email").attr("checked", "checked");
+		}
+		$("#chk_save_email").click(function() {
+			if ($("#chk_save_email").is(":checked")) { // check 되었을 때 실행
+			// 				alert('체크됨');
+				// cookie 저장
+				if ($("#email").val().trim() == "") {
+					alert("email을 입력해 주세요");
+					$("#chk_save_email").prop("checked", false);
+				} else {
+					$.cookie("user_email", $("#email").val().trim(), {
+						expires : 7,
+						path : "/"
+					})
+					// expires -> 기한 설정 '일' 단위. -1로 표기시 무한 저장
+				}
+			} else {
+				// 				alert('체크 없어짐');
+				// cookie 삭제
+				$.removeCookie("user_email", {
+					path : '/'
+				}); // 기한을 삭제함
+			}
+		});
+	</script>
+</body>
+
+</html>

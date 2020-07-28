@@ -1,0 +1,154 @@
+.body,
+.html {
+    width: 100%;
+    height: 100vh;
+    font-size: 16px;
+    background-image: linear-gradient(153deg, #FF9A9E 0%, #FACFC3 95%, #FAD0C4 95%);
+}
+
+input {
+    font: 400 16px "Noto Sans KR";
+    width: calc(100% - 32px);
+    padding: 12px 16px;
+    border-radius: 5px;
+    line-height: 28px;
+    border: 0;
+    background: #fff;
+}
+
+input::placeholder {
+    color: #CE5959;
+}
+
+input:focus {
+    box-shadow: inset 0 0 0 2px #CE5959;
+    outline: 0;
+    background-color: #fff;
+    transition: all 200ms ease-in-out;
+}
+
+label {
+    position: absolute;
+    top: 42px;
+    left: 16px;
+    display: none;
+    text-align: left;
+    font-size: 16px;
+    line-height: 14px;
+    color: #A63434;
+    font-weight: 500;
+    opacity: 1;
+}
+
+.inputGroup {
+    margin-bottom: 16px;
+    position: relative;
+    padding-top: 24px;
+}
+
+.inputGroup p {
+    margin-top: 8px;
+    text-align: left;
+    font-size: 14px;
+    line-height: 20px;
+}
+
+i {
+    display: inline-flex;
+    font-size: 16px;
+    height: 20px;
+    width: 20px;
+    align-items: center;
+    justify-content: center;
+    margin-right: 2px;
+}
+
+.btnGroup {
+    position: relative;
+    height: 44px;
+}
+
+.btn {
+    display: block;
+    font-size: .875rem;
+    font-weight: 500;
+    line-height: 24px;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.block {
+    position: absolute;
+    right: 0;
+    width: 88px;
+}
+
+.link {
+    transition: all 200ms ease-in-out;
+    position: absolute;
+    left: -12px;
+    color: #A63434;
+}
+
+.link:hover {
+    transition: all 200ms ease-in-out;
+    background-color: rgba(242, 42, 42, 0.1);
+}
+
+.primary {
+    transition: all 200ms ease-in-out;
+    background-color: #CE5959;
+    color: #FFFFFF;
+    background: #CE5959;
+    box-shadow: -4px -4px 16px 1px rgba(255, 255, 255, 0.50), 4px 4px 16px 0 rgba(242, 42, 42, 0.80);
+}
+
+.primary:hover {
+    background-color: #BA4747;
+    transition: all 200ms ease-in-out;
+    box-shadow: -2px -2px 8px 1px rgba(255, 255, 255, 0.50), 2px 2px 8px 0 rgba(242, 42, 42, 0.80);
+}
+
+.primary:active {
+    background-color: #A63434;
+    transition: all 200ms ease-in-out;
+    box-shadow: -1px -1px 4px 0px rgba(255, 255, 255, 0.50), 1px 1px 4px 0 rgba(242, 42, 42, 0.80);
+}
+
+.ripple {
+    position: absolute;
+    background-color: rgba(242, 42, 42, 0.5);
+    ;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    pointer-events: none;
+    animation: ripples 0.7s linear;
+}
+
+@keyframes ripples {
+    0% {
+        width: 0px;
+        height: 0px;
+        opacity: 0.2;
+    }
+    100% {
+        width: 500px;
+        height: 500px;
+        opacity: 0;
+    }
+}
+
+.hide {
+    display: none;
+}
+
+.show {
+    display: block;
+}
+
+.inputWrapper {
+    margin: 24px 0;
+}
