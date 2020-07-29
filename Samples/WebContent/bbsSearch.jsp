@@ -1,9 +1,10 @@
 <%@page import="dto.BbsDto"%>
+<%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
-<%@page import="dto.MemberDto"%>
 <%@page import="dao.BbsDao"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"%>
+    
 <%!
 // 댓글의 depth와 image를 추가하는 함수	
 // depth가 1일 때 -> '( )' 한칸 여백
@@ -20,21 +21,20 @@ public String arrow(int depth) { // 매개변수 숫자에 따라 여백 설정
 	return depth == 0 ? "" : tabString + arrowImg;
 }
 %>
-<%
-Object ologin = session.getAttribute("login");
-MemberDto mem = null;
 
-if (ologin == null) {
-%>
-<script type="text/javascript">
-	alert("로그인이 필요한 서비스입니다.");
-	location.href = "email.html";
-</script>
 <%
-	}
-mem = (MemberDto) ologin;
+//category -> 검색할 종류
+// searchingText -> 검색할 문장
+String category = request.getParameter("category");
+String searchingText = request.getParameter("searchingText");
+
+// 쿼리문이 인식할 수 있게 받아온 검색 종류 문장 바꾸기
+if(category.equals("제목")){ category = "TITLE"; }
+else if(category.equals("작성자")){ category = "EMAIL"; }
+else{ category = "CONTENT"; }
+
 BbsDao dao = BbsDao.getInstance();
-List<BbsDto> list = dao.getBbsList();
+List<BbsDto> list = dao.bbsSearch(searchingText, category);
 %>
 <!DOCTYPE html>
 <html>
@@ -43,9 +43,7 @@ List<BbsDto> list = dao.getBbsList();
 <title>Insert title here</title>
 </head>
 <body>
-	<div class="outer">
-		<h4 align="right">환영합니다.<%=mem.getName()%>님</h4>
-		<h1>게시판</h1>
+		<h1>검색 결과</h1>
 		
 		<!-- 검색하기 -->
 		<div>
@@ -86,11 +84,7 @@ List<BbsDto> list = dao.getBbsList();
 					<th><%=i + 1%></th>
 					<td>
 						<%=arrow(bbs.getDepth()) %> <!-- 여백 + 이미지 --> 
-						<%if(bbs.getDel() == 1) {%>
-							<span>관리자에의해 삭제된 게시글입니다.</span>
-						<%} else {%>
-							<a href="bbsDetail.jsp?seq=<%=bbs.getSeq()%>"><%=bbs.getTitle()%></a>
-						<%}%>
+						<a href="bbsDetail.jsp?seq=<%=bbs.getSeq()%>"><%=bbs.getTitle()%></a>
 					</td>
 					<td align="center"><%=bbs.getEmail()%></td>
 				</tr>
@@ -98,10 +92,8 @@ List<BbsDto> list = dao.getBbsList();
 					}
 				}
 				%>
-
 			</table>
 		</div>
 		<button><a type="submit" href="bbsWrite.jsp">글쓰기</a></button>
-	</div>
 </body>
 </html>

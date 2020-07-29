@@ -29,7 +29,7 @@
             <div class="inner__wrapper js-email">
                 <!-- <img class="logo" src="img/logo.svg" alt="logo"> -->
                 <h2>회원가입</h2>
-                <form action="signUpAf.jsp">
+                <form action="signUpAf.jsp" method="post">
                     <div class="inputWrapper">
                         <div class="inputGroup">
                             <label for="email" class="js-label">이메일</label>

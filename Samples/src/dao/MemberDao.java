@@ -134,9 +134,7 @@ public class MemberDao {
 				
 				if (rs.next()) { // id가 있다면
 					String email = rs.getString("EMAIL");
-					System.out.println("DB email : " + email);
 					String pwd = rs.getString("PWD");
-					System.out.println("DB pwd : " + pwd);
 					String name = rs.getString("NAME");
 					String auth = rs.getString("AUTH");
 					

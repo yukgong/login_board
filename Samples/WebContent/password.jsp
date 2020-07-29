@@ -34,7 +34,7 @@
 				<!-- <img class="logo" src="img/logo.svg" alt="logo"> -->
 				<h2 class="greeting">반갑습니다. <%=dto.getName()%>님</h2>
 				<p><%=dto.getEmail() %></p>
-				<form action="signInAf.jsp" id="frm">
+				<form action="signInAf.jsp" id="frm" method="post">
 					<div class="inputWrapper">
 						<div class="inputGroup">
 							<label for="password" class="js-label">비밀번호 입력</label> 
