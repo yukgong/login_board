@@ -73,7 +73,7 @@ List<BbsDto> list = dao.bbsSearch(searchingText, category);
 					if (list == null || list.size() == 0) {
 				%>
 				<tr class="board__row">
-					<td colspan="3">작성ㄴㄴ</td>
+					<td colspan="3">첫 게시물을 등록해보세요!</td>
 				</tr>
 				<%
 					} else {

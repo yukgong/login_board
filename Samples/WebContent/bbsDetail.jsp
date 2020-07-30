@@ -51,7 +51,10 @@ MemberDto mem = (MemberDto)session.getAttribute("login");
 	<%
 	if(bbs.getEmail().equals(mem.getEmail())){
 	%>
-		<button type="button" onclick="updateBbs(<%=bbs.getSeq()%>)">수정하기</button>
+		<form action="bbsUpdate.jsp" method="get">
+			<input type="hidden" name="seq" value="<%=seq%>">
+			<button type="submit">수정하기</button>
+		</form>
 		<button type="button" onclick="deleteBbs(<%=bbs.getSeq()%>)">삭제하기</button>
 	<%
 	}
@@ -65,9 +68,6 @@ MemberDto mem = (MemberDto)session.getAttribute("login");
 	</form>
 
 <script>
-	function updateBbs(){
-		location.href = "bbsUpdate.jsp?seq=" + <%=seq%>;
-	}
 	function deleteBbs(){
 		location.href = "bbsDelete.jsp?seq=" + <%=seq%>;
 	}

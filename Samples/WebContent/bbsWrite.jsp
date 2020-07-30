@@ -42,7 +42,7 @@ mem = (MemberDto)ologin;
 			</tr>
 			<tr>
 				<th>내용</th>
-				<td><textarea name="content" class="board-write__content" cols="100" rows="10" placeholder="내용을 입력해주세요."></textarea></td>
+				<td><textarea name="content" class="board-write__content" cols="90" rows="10" placeholder="내용을 입력해주세요."></textarea></td>
 			</tr>
 		</table>
 		<button type="button" onclick="location.href='bbsList.jsp'">목록으로</button>

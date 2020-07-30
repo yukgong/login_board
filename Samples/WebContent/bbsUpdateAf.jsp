@@ -1,16 +1,19 @@
-<%@page import="dto.BbsDto"%>
 <%@page import="dao.BbsDao"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    
 <%
 	request.setCharacterEncoding("utf-8");
-	String email = request.getParameter("email");
 	String title = request.getParameter("title");
 	String content = request.getParameter("content");
-
+	int seq = Integer.parseInt(request.getParameter("seq"));
+	
+	System.out.println(title);
+	System.out.println(content);
+	System.out.println(seq);
+	
 	BbsDao dao = BbsDao.getInstance();
-	BbsDto dto = new BbsDto(email, title, content);
-	boolean isSuccess = dao.writeBbs(dto);
+	boolean isSuccess = dao.updateBbs(title, content, seq);
 %>
 <!DOCTYPE html>
 <html>
@@ -19,14 +22,14 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<%if(isSuccess){%>
+	<%if(isSuccess){ %>
 		<script type="text/javascript">
-			alert("글 등록이 완료되었습니다.");
+			alert("수정이 완료되었습니다.");
 			location.href = "bbsList.jsp";
 		</script>
 	<%} else { %>
 		<script type="text/javascript">
-			alert("등록 실패");
+			alert("수정 실패");
 			history.back();
 		</script>
 	<%} %>

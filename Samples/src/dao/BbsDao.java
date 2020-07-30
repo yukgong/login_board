@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponseWrapper;
+
 import database.ConnectionClass;
 import dto.BbsDto;
 
@@ -326,12 +328,13 @@ public class BbsDao {
 		return count > 0 ? true : false;
 	}
 	
+	//TODO : Search
 	public List<BbsDto> bbsSearch(String searchingText, String category) {
 		String strArr[] = searchingText.split(" ");
 		System.out.println(strArr.length);
 		
 		String sql = " SELECT * FROM BBS "
-					+ " WHERE " + category + " "
+					+ " WHERE DEL = 0 AND " + category + " "
 					+ " LIKE '%' || '" + strArr[0] + "' || '%' ";
 		
 		if(strArr.length > 1) {
@@ -380,4 +383,149 @@ public class BbsDao {
 		
 		return list;
 	}
+	
+	//TODO : update
+		public boolean updateBbs(String title, String content, int seq) {
+			
+			String sql = " UPDATE BBS "
+					+ " SET TITLE = ? , CONTENT = ? "
+					+ " WHERE SEQ = ? ";
+			
+			
+			Connection conn = null;
+			PreparedStatement psmt = null;
+			int count = 0;
+			
+			try {
+				conn = ConnectionClass.getConnection();
+				
+				psmt = conn.prepareStatement(sql);
+				psmt.setString(1, title);
+				psmt.setString(2, content);
+				psmt.setInt(3, seq);
+				
+				count = psmt.executeUpdate();
+				
+			} catch (SQLException e) {
+				e.printStackTrace();
+				
+			} finally {
+				ConnectionClass.close(conn, psmt, null);
+			}
+			return count > 0 ? true : false;
+		}
+		
+		// 게시글 총 개수 구하는 메소드
+		public int getAllBbs(String choice, String searchWord) {
+			System.out.println(choice);
+			System.out.println(searchWord);
+			
+			
+			String sql = " SELECT COUNT(*) FROM BBS ";
+			
+			String sqlWord = "";
+			if(choice.equals("title")) {
+				sqlWord = " WHERE TITLE LIKE '%" + searchWord.trim() + "%' AND DEL=0 ";
+			}else if(choice.equals("writer")) {
+				sqlWord = " WHERE EMAIL='" + searchWord.trim() + "'"; 
+			}else if(choice.equals("content")) {
+				sqlWord = " WHERE CONTENT LIKE '%" + searchWord.trim() + "%' ";
+			} 
+			sql = sql + sqlWord;
+			
+			System.out.println(sql);
+			
+			Connection conn = null;
+			PreparedStatement psmt = null;
+			ResultSet rs = null;
+			
+			int listLength = 0;
+			
+			try {
+				conn = ConnectionClass.getConnection();
+				psmt = conn.prepareStatement(sql);
+				rs = psmt.executeQuery();
+				if(rs.next()) {
+					listLength = rs.getInt(1);
+				}
+				
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				ConnectionClass.close(conn, psmt, rs);
+			}
+			System.out.println(listLength);
+			return listLength;
+		}
+		
+		public List<BbsDto> getBbsPagingList(String choice, String searchWord, int currentPageNum) {
+
+			String sql = " SELECT SEQ, EMAIL, REF, STEP, DEPTH, "
+					+ " TITLE, CONTENT, WDATE, "
+					+ " DEL, READCOUNT "
+					+ " FROM ";
+			
+			sql += "(SELECT ROW_NUMBER()OVER(ORDER BY REF DESC, STEP ASC) AS RNUM, " + 
+					"	SEQ, EMAIL, REF, STEP, DEPTH, TITLE, CONTENT, WDATE, DEL, READCOUNT " + 
+					" FROM BBS ";
+			
+			String sqlWord = "";
+			if(choice.equals("title")) {
+				sqlWord = " WHERE TITLE LIKE '%" + searchWord.trim() + "%' AND DEL=0 ";
+			}else if(choice.equals("writer")) {
+				sqlWord = " WHERE EMAIL='" + searchWord.trim() + "'"; 
+			}else if(choice.equals("content")) {
+				sqlWord = " WHERE CONTENT LIKE '%" + searchWord.trim() + "%' ";
+			} 
+			sql = sql + sqlWord;
+			
+			sql += " ORDER BY REF DESC, STEP ASC) ";
+			sql += " WHERE RNUM >= ? AND RNUM <= ? ";
+			
+			int start, end;
+			start = 1 + 10 * currentPageNum; // 시작 글의 번호
+			end = 10 + 10 * currentPageNum; // 끝 글의 번호
+			
+			
+			Connection conn = null;
+			PreparedStatement psmt = null;
+			ResultSet rs = null;
+			
+			List<BbsDto> list = new ArrayList<BbsDto>();
+			
+			try {
+				conn = ConnectionClass.getConnection();
+				System.out.println("1/6 getBbsList success");
+				
+				psmt = conn.prepareStatement(sql);
+				psmt.setInt(1, start);
+				psmt.setInt(2, end);
+				
+				System.out.println("2/6 getBbsList success");
+				
+				rs = psmt.executeQuery();
+				System.out.println("3/6 getBbsList success");
+				while(rs.next()) {
+					int i = 1;
+					BbsDto dto = new BbsDto(rs.getInt(i++), 
+											rs.getString(i++), 
+											rs.getInt(i++), 
+											rs.getInt(i++), 
+											rs.getInt(i++), 
+											rs.getString(i++), 
+											rs.getString(i++), 
+											rs.getString(i++), 
+											rs.getInt(i++), 
+											rs.getInt(i++));				
+					list.add(dto);
+				}
+				System.out.println("4/6 getBbsList success");
+			} catch (Exception e) {			
+				e.printStackTrace();
+			} finally {
+				ConnectionClass.close(conn, psmt, rs);	
+			}
+			
+			return list;
+		}
 }
