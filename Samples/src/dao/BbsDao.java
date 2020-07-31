@@ -16,7 +16,7 @@ import dto.BbsDto;
 public class BbsDao {
 	private static BbsDao dao = new BbsDao();
 	
-	public BbsDao() {
+	private BbsDao() {
 	}
 	
 	public static BbsDao getInstance() {

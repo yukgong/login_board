@@ -136,6 +136,7 @@ if(listLength % 10 > 0) {
 			</table>
 		</div>
 		<button><a type="submit" href="bbsWrite.jsp">글쓰기</a></button>
+		<button><a type="button" href="./calendar/calendar.jsp">일정관리</a></button>
 		
 		<%	// 페이지 넘버가 들어왔을 때
 			for(int i = 0; i < pageLength; i++){
