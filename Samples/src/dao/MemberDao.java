@@ -13,7 +13,6 @@ public class MemberDao {
 	private static MemberDao dao = new MemberDao();
 	
 	private MemberDao(){
-		ConnectionClass.initConnection();
 	}
 	
 	public static MemberDao getInstance() {

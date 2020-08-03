@@ -20,6 +20,7 @@ public class ConnectionClass {
 
 	static public Connection getConnection() {
 		Connection conn = null;
+		ConnectionClass.initConnection();
 
 		String url = "jdbc:oracle:thin:@192.168.7.60:1521:xe";
 		String name = "hr";

@@ -14,6 +14,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
 
@@ -21,7 +22,7 @@
 // 오늘 날짜를 가져와서 범위를 설정하는 기준으로 삼는다. 
 Calendar cal = Calendar.getInstance(); // 날짜를 사용할 수 있게 만드는 내장 객체
 int tYear = cal.get(Calendar.YEAR);
-int ttMonth = cal.get(Calendar.MONTH) + 1; // 달은 0 ~ 11로 표기되므로.
+int tMonth = cal.get(Calendar.MONTH) + 1; // 달은 0 ~ 11로 표기되므로.
 int tDay = cal.get(Calendar.DATE);
 int tHour = cal.get(Calendar.HOUR_OF_DAY);
 int tMin = cal.get(Calendar.MINUTE);
@@ -113,6 +114,7 @@ int tMin = cal.get(Calendar.MINUTE);
 			</tr>			
 		</table>
 	</form>
+	</div>
 	
 	<%-- 제목을 적지 않거나, 내용을 입력하지 않았을 경우의 수를 고려해 처리 --%>
 	<script type="text/javascript">
@@ -137,7 +139,31 @@ int tMin = cal.get(Calendar.MINUTE);
 		
 		saveBtn.addEventListener("click", handleSaveEvent);
 	</script>
-</div>
+	
+	<script type="text/javascript">
+		setday();
+		$("select[name=day]").val("<%=day %>")
+		
+		$(document).ready(function (){
+			$("select[name=month]").change(setday);
+		});
+		
+		function setday(){
+			// 해당 년도의 월을 통해서 마지막 날을 구한다.
+			let year = $("select[name=year]").val();
+			let month = $("select[name=month]").val();
+			
+			let lastday = new Date(year, month, 0).getDate(); // 0을 지정하는 이유는 마지막 날짜를 구하기 위해서, 특정 날짜를 지정할 필요없기 때문.
+// 			alert(lastday);
+			
+			let str = "";
+			for (var i = 1; i <= lastday; i++) {
+				str += "<option value='" + i + "'>" + i + "</option>";
+			}
+			
+			$("select[name=day]").html(str);
+		}
+	</script>
 
 </body>
 </html>
